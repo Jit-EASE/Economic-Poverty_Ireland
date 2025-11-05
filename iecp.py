@@ -1,7 +1,36 @@
+# -----------------------------------------------------
+# 🌍 OSM-BASED 3D GEOSPATIAL MAP
+# -----------------------------------------------------
+st.subheader(f"🗺️ OpenStreetMap 3D View — {selected_year}")
+
+layer = pdk.Layer(
+    "ColumnLayer",
+    data=filtered,
+    get_position=["lon", "lat"],
+    get_elevation="economic_poverty_index * 3000",
+    radius=2500,
+    get_fill_color="[255 * economic_poverty_index, 120, 180 * (1 - economic_poverty_index), 200]",
+    pickable=True,
+)
+
+view_state = pdk.ViewState(latitude=53.4, longitude=-8.2, zoom=6.3, pitch=45)
+
+r = pdk.Deck(
+    map_style="https://basemaps.cartocdn.com/gl/positron-gl-style/style.json",
+    layers=[layer],
+    initial_view_state=view_state,
+    tooltip={
+        "html": "<b>{county}</b><br/>EPI: {economic_poverty_index:.3f}<br/>Income: €{disposable_income_eur}<br/>Deprivation: {deprivation_index_std:.2f}",
+        "style": {"backgroundColor": "steelblue", "color": "white"},
+    },
+)
+
+st.pydeck_chart(r)
 # =====================================================
 # IRELAND ECONOMIC POVERTY — AI-ECONOMETRIC DASHBOARD
 # =====================================================
 
+import os
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -16,7 +45,7 @@ import openai
 # -----------------------------------------------------
 st.set_page_config(page_title="Ireland Economic Poverty AI Dashboard", layout="wide")
 
-openai.api_key = st.secrets.get("OPENAI_API_KEY", "")
+openai.api_key = os.getenv("OPENAI_API_KEY") or st.secrets.get("OPENAI_API_KEY", "")
 
 st.title("🇮🇪 Ireland Economic Poverty Dashboard (2016–2030)")
 st.caption("Powered by Econometrics × AI × Geospatial Intelligence")
@@ -56,27 +85,32 @@ show_pie = st.sidebar.checkbox("Show Land Use Pie", True)
 filtered = df[df["year"] == selected_year]
 
 # -----------------------------------------------------
-# 3D GEOSPATIAL MAP
+# 🌍 OSM-BASED 3D GEOSPATIAL MAP
 # -----------------------------------------------------
-st.subheader(f"🗺️ 3D Geospatial View — {selected_year}")
+st.subheader(f"🗺️ OpenStreetMap 3D View — {selected_year}")
 
 layer = pdk.Layer(
     "ColumnLayer",
     data=filtered,
     get_position=["lon", "lat"],
     get_elevation="economic_poverty_index * 3000",
-    elevation_scale=50,
-    radius=2000,
-    get_fill_color="[255 * economic_poverty_index, 100, 180 * (1-economic_poverty_index), 200]",
+    radius=2500,
+    get_fill_color="[255 * economic_poverty_index, 120, 180 * (1 - economic_poverty_index), 200]",
     pickable=True,
-    auto_highlight=True,
 )
-tooltip = {
-    "html": "<b>{county}</b><br/>EPI: {economic_poverty_index:.3f}<br/>Income: €{disposable_income_eur}<br/>Deprivation: {deprivation_index_std:.2f}",
-    "style": {"backgroundColor": "steelblue", "color": "white"},
-}
-view_state = pdk.ViewState(latitude=53.4, longitude=-8.2, zoom=6.5, pitch=45)
-r = pdk.Deck(layers=[layer], initial_view_state=view_state, tooltip=tooltip)
+
+view_state = pdk.ViewState(latitude=53.4, longitude=-8.2, zoom=6.3, pitch=45)
+
+r = pdk.Deck(
+    map_style="https://basemaps.cartocdn.com/gl/positron-gl-style/style.json",
+    layers=[layer],
+    initial_view_state=view_state,
+    tooltip={
+        "html": "<b>{county}</b><br/>EPI: {economic_poverty_index:.3f}<br/>Income: €{disposable_income_eur}<br/>Deprivation: {deprivation_index_std:.2f}",
+        "style": {"backgroundColor": "steelblue", "color": "white"},
+    },
+)
+
 st.pydeck_chart(r)
 
 # -----------------------------------------------------
