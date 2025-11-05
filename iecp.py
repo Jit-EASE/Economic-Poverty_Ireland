@@ -23,34 +23,7 @@ openai.api_key = os.getenv("OPENAI_API_KEY") or st.secrets.get("OPENAI_API_KEY",
 st.title("🇮🇪 Ireland Economic Poverty Dashboard (2016–2030)")
 st.caption("Powered by Econometrics × AI × Geospatial Intelligence")
 
-# -----------------------------------------------------
-# 🌍 OSM-BASED 3D GEOSPATIAL MAP
-# -----------------------------------------------------
-st.subheader(f"🗺️ OpenStreetMap 3D View — {selected_year}")
 
-layer = pdk.Layer(
-    "ColumnLayer",
-    data=filtered,
-    get_position=["lon", "lat"],
-    get_elevation="economic_poverty_index * 3000",
-    radius=2500,
-    get_fill_color="[255 * economic_poverty_index, 120, 180 * (1 - economic_poverty_index), 200]",
-    pickable=True,
-)
-
-view_state = pdk.ViewState(latitude=53.4, longitude=-8.2, zoom=6.3, pitch=45)
-
-r = pdk.Deck(
-    map_style="https://basemaps.cartocdn.com/gl/positron-gl-style/style.json",
-    layers=[layer],
-    initial_view_state=view_state,
-    tooltip={
-        "html": "<b>{county}</b><br/>EPI: {economic_poverty_index:.3f}<br/>Income: €{disposable_income_eur}<br/>Deprivation: {deprivation_index_std:.2f}",
-        "style": {"backgroundColor": "steelblue", "color": "white"},
-    },
-)
-
-st.pydeck_chart(r)
 
 # -----------------------------------------------------
 # LOAD DATA
