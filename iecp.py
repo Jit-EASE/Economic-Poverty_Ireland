@@ -3,6 +3,22 @@
 # =====================================================
 
 import os
+import sys
+import subprocess
+
+# ---------- AUTO-INSTALL FALLBACK (for Streamlit Cloud) ----------
+# This ensures missing modules like plotly, pydeck, or statsmodels are installed on runtime
+def install_if_missing(package):
+    try:
+        __import__(package)
+    except ImportError:
+        print(f"📦 Installing missing dependency: {package} ...")
+        subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+
+for pkg in ["streamlit", "pandas", "numpy", "plotly", "pydeck", "statsmodels", "openai"]:
+    install_if_missing(pkg)
+# -----------------------------------------------------------------
+
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -11,7 +27,6 @@ import plotly.graph_objects as go
 import pydeck as pdk
 import statsmodels.api as sm
 import openai
-
 # -----------------------------------------------------
 # CONFIGURATION
 # -----------------------------------------------------
