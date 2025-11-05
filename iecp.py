@@ -26,7 +26,7 @@ st.caption("Powered by Econometrics × AI × Geospatial Intelligence")
 # -----------------------------------------------------
 @st.cache_data
 def load_data():
-    df = pd.read_csv("/Users/jit/Downloads/ie_poverty_county_panel_2016_2024.csv")
+    df = pd.read_csv("ie_poverty_county_panel_2016_2024.csv")
     centroids = {
         "Carlow": [52.73, -6.64], "Cavan": [54.00, -7.36], "Clare": [52.84, -9.00],
         "Cork": [51.90, -8.47], "Donegal": [54.95, -7.73], "Dublin": [53.35, -6.26],
