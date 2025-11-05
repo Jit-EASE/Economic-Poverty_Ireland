@@ -1,7 +1,7 @@
-streamlit==1.40.0
-pandas==2.2.3
-numpy==1.26.4
-plotly==5.24.1
-pydeck==0.9.1
-statsmodels==0.14.3
-openai==1.52.2
+streamlit
+pandas
+numpy
+plotly
+pydeck
+statsmodels
+openai
