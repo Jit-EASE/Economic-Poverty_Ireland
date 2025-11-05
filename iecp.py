@@ -1,3 +1,28 @@
+
+# =====================================================
+# IRELAND ECONOMIC POVERTY — AI-ECONOMETRIC DASHBOARD
+# =====================================================
+
+import os
+import streamlit as st
+import pandas as pd
+import numpy as np
+import plotly.express as px
+import plotly.graph_objects as go
+import pydeck as pdk
+import statsmodels.api as sm
+import openai
+
+# -----------------------------------------------------
+# CONFIGURATION
+# -----------------------------------------------------
+st.set_page_config(page_title="Ireland Economic Poverty AI Dashboard", layout="wide")
+
+openai.api_key = os.getenv("OPENAI_API_KEY") or st.secrets.get("OPENAI_API_KEY", "")
+
+st.title("🇮🇪 Ireland Economic Poverty Dashboard (2016–2030)")
+st.caption("Powered by Econometrics × AI × Geospatial Intelligence")
+
 # -----------------------------------------------------
 # 🌍 OSM-BASED 3D GEOSPATIAL MAP
 # -----------------------------------------------------
@@ -26,29 +51,6 @@ r = pdk.Deck(
 )
 
 st.pydeck_chart(r)
-# =====================================================
-# IRELAND ECONOMIC POVERTY — AI-ECONOMETRIC DASHBOARD
-# =====================================================
-
-import os
-import streamlit as st
-import pandas as pd
-import numpy as np
-import plotly.express as px
-import plotly.graph_objects as go
-import pydeck as pdk
-import statsmodels.api as sm
-import openai
-
-# -----------------------------------------------------
-# CONFIGURATION
-# -----------------------------------------------------
-st.set_page_config(page_title="Ireland Economic Poverty AI Dashboard", layout="wide")
-
-openai.api_key = os.getenv("OPENAI_API_KEY") or st.secrets.get("OPENAI_API_KEY", "")
-
-st.title("🇮🇪 Ireland Economic Poverty Dashboard (2016–2030)")
-st.caption("Powered by Econometrics × AI × Geospatial Intelligence")
 
 # -----------------------------------------------------
 # LOAD DATA
